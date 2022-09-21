@@ -10,6 +10,23 @@ MainComponent::MainComponent()
     // Make sure you set the size of the component after
     // you add any child components.
     setSize (800, 600);
+    
+    frequencySlider.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
+    frequencySlider.setRange(50, 500);
+    frequencySlider.setTextValueSuffix("Hz");
+    frequencySlider.addListener(this);
+    addAndMakeVisible(frequencySlider);
+    frequencyLabel.setText("Frequency", juce::dontSendNotification);
+    frequencyLabel.attachToComponent(&frequencySlider, true);
+    
+    amplitudeSlider.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
+    amplitudeSlider.setRange(0, 0.9);
+    amplitudeSlider.setTextValueSuffix("peak");
+    amplitudeSlider.addListener(this);
+    addAndMakeVisible(amplitudeSlider);
+    amplitudeLabel.setText("Amplitude", juce::dontSendNotification);
+    amplitudeLabel.attachToComponent(&amplitudeSlider, true);
+    
 
     // Some platforms require permissions to open input channels so request that here
     if (juce::RuntimePermissions::isRequired (juce::RuntimePermissions::recordAudio)
@@ -21,7 +38,7 @@ MainComponent::MainComponent()
     else
     {
         // Specify the number of input and output channels that we want to open
-        setAudioChannels (2, 2);
+        setAudioChannels (0, 2);
     }
 }
 
@@ -38,7 +55,7 @@ void MainComponent::prepareToPlay (int samplesPerBlockExpected, double sampleRat
     phase = 0;
     wtSize = 1024; // value long array (is it since it's sored as a double)
     amplitude = 0.25;
-    increment = frequency * wtSize / sampleRate;
+    currentSampleRate = sampleRate;
     
     for (int i = 0; i < wtSize; i++)
     {
@@ -48,6 +65,7 @@ void MainComponent::prepareToPlay (int samplesPerBlockExpected, double sampleRat
 
 void MainComponent::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferToFill)
 {
+    
     float* const LEFT_SPEAKER = bufferToFill.buffer->getWritePointer(LEFT, bufferToFill.startSample);
     float* const RIGHT_SPEAKER = bufferToFill.buffer->getWritePointer(RIGHT, bufferToFill.startSample);
     
@@ -55,8 +73,7 @@ void MainComponent::getNextAudioBlock (const juce::AudioSourceChannelInfo& buffe
     {
         LEFT_SPEAKER[sample] = waveTable[(int)phase] * amplitude;
         RIGHT_SPEAKER[sample] = waveTable[(int)phase] * amplitude;
-        phase = fmod((phase + increment), wtSize);
-        
+        updateFrequency();
     }
 }
 
@@ -82,4 +99,25 @@ void MainComponent::resized()
     // This is called when the MainContentComponent is resized.
     // If you add any child components, this is where you should
     // update their positions.
+    frequencySlider.setBounds(LABEL_SPACE, 20, getWidth()-LABEL_SPACE, 20);
+    amplitudeSlider.setBounds(LABEL_SPACE, 50, getWidth()-LABEL_SPACE, 50);
+}
+//===============================================================================
+void MainComponent::sliderValueChanged(juce::Slider* slider)
+{
+    if (slider == &frequencySlider)
+    {
+        frequency = frequencySlider.getValue();
+    }
+    else if (slider == &amplitudeSlider)
+    {
+        amplitude = amplitudeSlider.getValue();
+    }
+    
+}
+
+void MainComponent::updateFrequency()
+{
+    increment = frequency * wtSize / currentSampleRate;
+    phase = fmod((phase + increment), wtSize);
 }
