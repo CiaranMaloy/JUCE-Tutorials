@@ -6,6 +6,12 @@
   ==============================================================================
 */
 
+
+/*
+ There's too much depreciated stuff in this tutorial
+ 
+ */
+
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
@@ -19,9 +25,23 @@ SynthFrameworkAudioProcessor::SynthFrameworkAudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       )
+                       ),
+attack_time(0.1f),
+tree(*this, nullptr)
 #endif
 {
+    juce::NormalisableRange<float> attackPram (0.1, 5000.f);
+    tree.createAndAddParameter("attack", "Attack", "Attack", attackPram, 0.1f, nullptr, nullptr); // this is being depreciated (what replaced with?)
+    
+    mySynth.clearVoices(); // clear all voices
+    
+    for (int i=0; i < 5; i++)
+    {
+        mySynth.addVoice(new SynthVoice());
+    }
+    
+    mySynth.clearSounds();
+    mySynth.addSound(new SynthSound());
 }
 
 SynthFrameworkAudioProcessor::~SynthFrameworkAudioProcessor()
@@ -93,8 +113,10 @@ void SynthFrameworkAudioProcessor::changeProgramName (int index, const juce::Str
 //==============================================================================
 void SynthFrameworkAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    // Use this method as the place to do any pre-playback
-    // initialisation that you need..
+    juce::ignoreUnused(samplesPerBlock);
+    lastSampleRate = sampleRate;
+    mySynth.setCurrentPlaybackSampleRate(lastSampleRate);
+    
 }
 
 void SynthFrameworkAudioProcessor::releaseResources()
@@ -131,31 +153,21 @@ bool SynthFrameworkAudioProcessor::isBusesLayoutSupported (const BusesLayout& la
 
 void SynthFrameworkAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
-    juce::ScopedNoDenormals noDenormals;
-    auto totalNumInputChannels  = getTotalNumInputChannels();
-    auto totalNumOutputChannels = getTotalNumOutputChannels();
-
-    // In case we have more outputs than inputs, this code clears any output
-    // channels that didn't contain input data, (because these aren't
-    // guaranteed to be empty - they may contain garbage).
-    // This is here to avoid people getting screaming feedback
-    // when they first compile a plugin, but obviously you don't need to keep
-    // this code if your algorithm always overwrites all the output channels.
-    for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
-        buffer.clear (i, 0, buffer.getNumSamples());
-
-    // This is the place where you'd normally do the guts of your plugin's
-    // audio processing...
-    // Make sure to reset the state if your inner loop is processing
-    // the samples and the outer loop is handling the channels.
-    // Alternatively, you can process the samples with the channels
-    // interleaved by keeping the same state.
-    for (int channel = 0; channel < totalNumInputChannels; ++channel)
+    //std::cout << attack_time << std::endl; :- probably shouldn't do this either
+    // within here I need to get the parameters from sliders and give them to the Synth Voice.
+    for (int i = 0; i < mySynth.getNumVoices(); i++)
     {
-        auto* channelData = buffer.getWritePointer (channel);
-
-        // ..do something to the data...
+        // if my voice is dynamically cast as a synth voice
+        if ((myVoice = dynamic_cast<SynthVoice*>(mySynth.getVoice(i))))
+        {
+            myVoice->getParam(tree.getRawParameterValue("attack"));
+        }
     }
+    
+    // clear buffer --
+    buffer.clear();
+    
+    mySynth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
 }
 
 //==============================================================================

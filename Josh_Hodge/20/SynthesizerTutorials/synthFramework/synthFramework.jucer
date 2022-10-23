@@ -5,14 +5,51 @@
               pluginCharacteristicsValue="pluginIsSynth,pluginProducesMidiOut,pluginWantsMidiIn">
   <MAINGROUP id="tZvARp" name="synthFramework">
     <GROUP id="{4DF4EF81-8946-B275-7D08-8262633C3999}" name="Source">
+      <GROUP id="{19CC34D0-AFCE-7FE5-48B2-4A3D379DB924}" name="Maximilian">
+        <GROUP id="{C2D771B4-B501-7640-D3A1-7694F85AF6D1}" name="src">
+          <GROUP id="{9A338E63-EBF6-16C3-A404-3F404DDDC6A8}" name="libs">
+            <GROUP id="{E5741CE5-90D9-C97D-7EAA-81E57FD93F7F}" name="PolyBLEP">
+              <FILE id="VrFIto" name="PolyBLEP.cpp" compile="1" resource="0" file="../Maximilian/src/libs/PolyBLEP/PolyBLEP.cpp"/>
+              <FILE id="BdoZqu" name="PolyBLEP.h" compile="0" resource="0" file="../Maximilian/src/libs/PolyBLEP/PolyBLEP.h"/>
+              <FILE id="EKjM1u" name="README.md" compile="0" resource="1" file="../Maximilian/src/libs/PolyBLEP/README.md"/>
+            </GROUP>
+            <FILE id="FnUpna" name="fft.cpp" compile="1" resource="0" file="../Maximilian/src/libs/fft.cpp"/>
+            <FILE id="ciKg6e" name="fft.h" compile="0" resource="0" file="../Maximilian/src/libs/fft.h"/>
+            <FILE id="YzTi1A" name="maxiAtoms.cpp" compile="1" resource="0" file="../Maximilian/src/libs/maxiAtoms.cpp"/>
+            <FILE id="Ws0DEE" name="maxiAtoms.h" compile="0" resource="0" file="../Maximilian/src/libs/maxiAtoms.h"/>
+            <FILE id="oWifM6" name="maxiBark.cpp" compile="1" resource="0" file="../Maximilian/src/libs/maxiBark.cpp"/>
+            <FILE id="yUn2fc" name="maxiBark.h" compile="0" resource="0" file="../Maximilian/src/libs/maxiBark.h"/>
+            <FILE id="c2F6jx" name="maxiClock.cpp" compile="1" resource="0" file="../Maximilian/src/libs/maxiClock.cpp"/>
+            <FILE id="NIZjBt" name="maxiClock.h" compile="0" resource="0" file="../Maximilian/src/libs/maxiClock.h"/>
+            <FILE id="hc856W" name="maxiConvolve.cpp" compile="1" resource="0"
+                  file="../Maximilian/src/libs/maxiConvolve.cpp"/>
+            <FILE id="j7UcGT" name="maxiConvolve.h" compile="0" resource="0" file="../Maximilian/src/libs/maxiConvolve.h"/>
+            <FILE id="w59bqh" name="maxiFFT.cpp" compile="1" resource="0" file="../Maximilian/src/libs/maxiFFT.cpp"/>
+            <FILE id="iO8Nuv" name="maxiFFT.h" compile="0" resource="0" file="../Maximilian/src/libs/maxiFFT.h"/>
+            <FILE id="QryNSi" name="maxiGrains.cpp" compile="1" resource="0" file="../Maximilian/src/libs/maxiGrains.cpp"/>
+            <FILE id="ZMHK4Z" name="maxiGrains.h" compile="0" resource="0" file="../Maximilian/src/libs/maxiGrains.h"/>
+            <FILE id="PYitBr" name="maxim.h" compile="0" resource="0" file="../Maximilian/src/libs/maxim.h"/>
+            <FILE id="ZbrAyF" name="maxiMFCC.cpp" compile="1" resource="0" file="../Maximilian/src/libs/maxiMFCC.cpp"/>
+            <FILE id="vQnZfW" name="maxiMFCC.h" compile="0" resource="0" file="../Maximilian/src/libs/maxiMFCC.h"/>
+            <FILE id="JyH7dE" name="maxiPolyBLEP.h" compile="0" resource="0" file="../Maximilian/src/libs/maxiPolyBLEP.h"/>
+            <FILE id="ziKc79" name="maxiReverb.cpp" compile="1" resource="0" file="../Maximilian/src/libs/maxiReverb.cpp"/>
+            <FILE id="htmpVq" name="maxiReverb.h" compile="0" resource="0" file="../Maximilian/src/libs/maxiReverb.h"/>
+            <FILE id="K2WzCO" name="sineTable.h" compile="0" resource="0" file="../Maximilian/src/libs/sineTable.h"/>
+            <FILE id="jdjsG2" name="stb_vorbis.c" compile="1" resource="0" file="../Maximilian/src/libs/stb_vorbis.c"/>
+            <FILE id="hZvoz1" name="stb_vorbis.h" compile="0" resource="0" file="../Maximilian/src/libs/stb_vorbis.h"/>
+          </GROUP>
+          <FILE id="IpQraX" name="maximilian.cpp" compile="1" resource="0" file="../Maximilian/src/maximilian.cpp"/>
+          <FILE id="qwn955" name="maximilian.h" compile="0" resource="0" file="../Maximilian/src/maximilian.h"/>
+        </GROUP>
+      </GROUP>
       <FILE id="EuLU4N" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="KNVC17" name="PluginProcessor.h" compile="0" resource="0"
             file="Source/PluginProcessor.h"/>
-      <FILE id="J92eLF" name="SynthVoice.h" compile="0" resource="0" file="Source/SynthVoice.h"/>
       <FILE id="s085jW" name="PluginEditor.cpp" compile="1" resource="0"
             file="Source/PluginEditor.cpp"/>
       <FILE id="hp3Rxh" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+      <FILE id="J92eLF" name="SynthVoice.h" compile="0" resource="0" file="Source/SynthVoice.h"/>
       <FILE id="BQbhfB" name="SynthSound.h" compile="0" resource="0" file="Source/SynthSound.h"/>
     </GROUP>
   </MAINGROUP>
@@ -20,7 +57,7 @@
   <EXPORTFORMATS>
     <XCODE_MAC targetFolder="Builds/MacOSX">
       <CONFIGURATIONS>
-        <CONFIGURATION isDebug="1" name="Debug" targetName="synthFramework"/>
+        <CONFIGURATION isDebug="1" name="Debug" targetName="synthFramework" headerPath="/Users/ciaranmaloy/Documents/JUICE/Tutorials/Josh_Hodge/20/SynthesizerTutorials/Maximilian"/>
         <CONFIGURATION isDebug="0" name="Release" targetName="synthFramework"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
